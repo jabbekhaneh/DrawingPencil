@@ -8,7 +8,6 @@ const state = {
 //------------------------------------
 const getters = {
     GetCountries: (state) => state.countries,
-    
 };
 //------------------------------------
 const actions = {
@@ -20,9 +19,8 @@ const actions = {
     },
     
     async register({ commit, state }, obj) {
-
-        const response = await axios.post('https://localhost:7258/api/ManagerRoles/', obj);
-        alert("OK");
+        const response = await axios.post('https://localhost:7179/api/Account', obj);
+        alert("success user : " + obj.userName);
     },
 
     

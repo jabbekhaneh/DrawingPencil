@@ -6,20 +6,20 @@
   </section> -->
 
   <div class="w-full max-w-lg m-auto">
-  <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <form v-on:submit="RegisterUser" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
 
     <div class="mb-4">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
         Username
       </label>
-      <input name="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
+      <input name="username" v-model="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
     </div>
 
     <div class="mb-6">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
         Password
       </label>
-      <input name="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
+      <input name="password" v-model="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
       <p class="text-red-500 text-xs italic">Please choose a password.</p>
     </div>
     
@@ -27,7 +27,7 @@
       <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
         Country
       </label>
-      <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
+      <select v-model="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline">
          <option v-for="(country, index) in GetCountries" :key="index">{{ country.name }}</option>
          
       </select>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="flex items-center justify-between">
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
         Register
       </button>
       
@@ -54,18 +54,38 @@ import SidebarNavigation from '@/components/Common/SidebarNavigation/SidebarNavi
 import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: 'HomeView',
+  
   components: {
     SidebarNavigation,
+  },
+  data(){
+     return{
+      userName:"",
+      password:"",
+      country:"",
+     };
   },
   created: function () {
     this.fetchCountries();
   },
   computed: mapGetters(["GetCountries"]),
+
   methods: {
     ...mapActions([
       "fetchCountries",
+      "register",
     ]),
-    
+
+    async RegisterUser(){
+      
+      var userObj = {
+        userName: this.username,
+        password: this.password,
+        country: this.country,  
+      };
+      
+      this.$store.dispatch("register", userObj);
+    }
     
   },
 }
